@@ -1,143 +1,158 @@
-# Zepto Support Assistant
+# Zepto AI Platform
 
-> **AI-Powered Retrieval-Augmented Generation (RAG) Support Assistant for Zepto Policies**
->
-> A production-ready support assistant built using **FastAPI, ChromaDB, Sentence Transformers, LangGraph, and Docker**. The assistant intelligently classifies user queries, retrieves relevant policy documents using semantic search, and generates grounded responses using a mock LLM workflow.
+An end-to-end AI and Data Engineering platform consisting of three independent modules:
 
----
+- Data Pipeline
+- Analytics & Machine Learning Pipeline
+- Retrieval-Augmented Generation (RAG) Support Assistant
 
-# Table of Contents
-
-- Project Overview
-- Objectives
-- Features
-- Technology Stack
-- Project Structure
-- System Architecture
-- Workflow
-- Retrieval-Augmented Generation (RAG)
-- LangGraph Workflow
-- Prompt Engineering
-- Embedding & Vector Database
-- API Endpoints
-- Installation
-- Running Locally
-- Docker Deployment
-- Example Requests
-- Example Responses
-- Project Modules
-- Design Decisions
-- Future Improvements
-- Screenshots
-- License
+This repository contains the complete implementation of the **Zepto AI Platform Assignment**, demonstrating web scraping, data engineering, machine learning, semantic search, and AI-powered customer support.
 
 ---
 
-# Project Overview
+# Repository Structure
 
-The **Zepto Support Assistant** is an intelligent customer support chatbot that answers **only Zepto policy-related questions**.
-
-Instead of using keyword matching, it performs **semantic retrieval** using Sentence Transformers and ChromaDB.
-
-The application:
-
-- accepts customer questions
-- classifies whether they are policy questions
-- retrieves relevant policy documents
-- generates grounded answers
-- rejects unrelated questions
-
-This architecture follows the principles of **Retrieval-Augmented Generation (RAG)** while operating in **MOCK_LLM mode** for deterministic offline evaluation.
+```
+zepto-ai-platform/
+│
+├── data_pipeline/
+├── analytics/
+├── support_assistant/
+├── README.md
+└── .gitignore
+```
 
 ---
 
-# Objectives
+# Module 1 – Data Pipeline
 
-The project demonstrates:
+## Objective
 
-- Semantic Search
-- Vector Databases
-- Retrieval-Augmented Generation
-- LangGraph State Machines
-- FastAPI REST APIs
-- Prompt Engineering
-- Docker Deployment
-- AI System Design
+Develop a complete ETL pipeline by scraping book data, cleaning and transforming it, storing it in a relational database, and querying it using SQL and Pandas.
 
----
+## Features
 
-# Features
+- Web scraping using Requests and BeautifulSoup
+- Scraped books from multiple categories
+- Data cleaning and preprocessing
+- Price conversion from GBP to INR
+- Normalized SQLite database
+- Primary Key and Foreign Key relationships
+- SQL queries for analysis
+- Pandas integration with SQLite
+- DataFrame merge validation
 
-## Semantic Document Search
+## Technologies
 
-Uses Sentence Transformers to search policies based on meaning instead of exact keywords.
-
----
-
-## ChromaDB Vector Store
-
-Stores document embeddings for efficient similarity search.
-
----
-
-## Intent Classification
-
-Classifies every incoming query as either
-
-- Policy Question
-- General Question
+- Python
+- Requests
+- BeautifulSoup
+- Pandas
+- SQLite
 
 ---
 
-## LangGraph Workflow
+# Module 2 – Analytics Pipeline
 
-Routes requests dynamically.
+## Objective
+
+Perform exploratory data analysis and develop machine learning models using the Titanic dataset.
+
+## Dataset
+
+The project uses the Titanic dataset loaded through Seaborn, with an offline copy included in the repository.
+
+## Exploratory Data Analysis
+
+- Dataset overview
+- Missing value analysis
+- Data cleaning
+- Outlier detection
+- Univariate analysis
+- Bivariate analysis
+- Correlation analysis
+- Feature standardization
+
+## Machine Learning
+
+Implemented models include:
+
+- Logistic Regression
+- Decision Tree
+- Random Forest
+
+Model evaluation includes:
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- ROC Curve
+- AUC Score
+
+Additional tasks:
+
+- SMOTE for class imbalance
+- Class weight comparison
+- GridSearchCV
+- Out-of-Bag (OOB) evaluation
+- Linear Regression
+- Residual analysis
+
+## Model Persistence
+
+The best-performing pipeline is saved as:
+
+```
+analytics/models/best_pipeline.joblib
+```
+
+---
+
+# Module 3 – Support Assistant
+
+## Objective
+
+Develop a Retrieval-Augmented Generation (RAG) support assistant capable of answering Zepto policy-related queries.
+
+## Features
+
+- Semantic document retrieval
+- ChromaDB vector database
+- Sentence Transformer embeddings
+- LangGraph workflow
+- Intent classification
+- Prompt engineering
+- FastAPI REST API
+- Docker deployment
+- Offline MOCK LLM mode
+
+---
+
+# System Workflow
 
 ```
 User Query
-     │
-     ▼
+      │
+      ▼
 Intent Classification
-     │
-     ├──────────────┐
-     ▼              ▼
-Policy         General
-Question       Question
-     │              │
-     ▼              ▼
-Retrieve       Direct Reply
-Context
-     │
-     ▼
-Prompt
-     │
-     ▼
-Mock LLM
-     │
-     ▼
-Response
-```
-
----
-
-## Retrieval-Augmented Generation (RAG)
-
-Instead of memorizing policies, the assistant retrieves relevant context before answering.
-
----
-
-## Docker Support
-
-Application can be deployed in a Docker container.
-
----
-
-## Swagger Documentation
-
-Interactive API documentation available at
-
-```
-http://localhost:7860/docs
+      │
+      ├───────────────┐
+      ▼               ▼
+Policy Query     General Query
+      │               │
+      ▼               ▼
+Retrieve        Direct Response
+Documents
+      │
+      ▼
+Prompt Construction
+      │
+      ▼
+MOCK LLM
+      │
+      ▼
+JSON Response
 ```
 
 ---
@@ -145,350 +160,37 @@ http://localhost:7860/docs
 # Technology Stack
 
 | Category | Technology |
-|-----------|------------|
-| Language | Python 3.11 |
-| Framework | FastAPI |
-| Workflow | LangGraph |
-| Embeddings | Sentence Transformers |
+|----------|------------|
+| Programming Language | Python |
+| Web Framework | FastAPI |
+| Data Analysis | Pandas |
+| Visualization | Matplotlib |
+| Machine Learning | Scikit-learn |
+| Imbalanced Learning | SMOTE |
+| Web Scraping | Requests, BeautifulSoup |
+| Database | SQLite |
 | Vector Database | ChromaDB |
-| API Validation | Pydantic |
+| Embeddings | Sentence Transformers |
+| Workflow | LangGraph |
 | Containerization | Docker |
-| Model | all-MiniLM-L6-v2 |
-| Server | Uvicorn |
-
----
-
-# Project Structure
-
-```
-support_assistant/
-│
-├── app/
-│   ├── config.py
-│   ├── graph.py
-│   ├── main.py
-│   ├── prompts.py
-│   ├── rag.py
-│   └── schemas.py
-│
-├── docs/
-│   ├── doc_01.txt
-│   ├── doc_02.txt
-│   ├── doc_03.txt
-│   ├── doc_04.txt
-│   ├── doc_05.txt
-│   ├── doc_06.txt
-│   ├── doc_07.txt
-│   └── doc_08.txt
-│
-├── chroma_db/
-│
-├── ingest.py
-├── test_rag.py
-├── Dockerfile
-├── requirements.txt
-├── README.md
-└── .env.example
-```
-
----
-
-# System Architecture
-
-```
-                    User Query
-                         │
-                         ▼
-                 FastAPI Endpoint
-                         │
-                         ▼
-                 LangGraph Workflow
-                         │
-          ┌──────────────┴──────────────┐
-          ▼                             ▼
- Policy Question?                 General Question?
-          │                             │
-         YES                            NO
-          │                             │
-          ▼                             ▼
-     Retrieve Context            Direct Response
-          │
-          ▼
-      ChromaDB Search
-          │
-          ▼
-   SentenceTransformer
-          │
-          ▼
-     Prompt Generation
-          │
-          ▼
-      MOCK LLM Response
-          │
-          ▼
-        JSON Output
-```
-
----
-
-# Workflow
-
-## Step 1
-
-User submits a question.
-
-Example
-
-```
-What is the delivery fee?
-```
-
----
-
-## Step 2
-
-LangGraph determines whether the question is policy-related.
-
----
-
-## Step 3
-
-Relevant policy documents are retrieved from ChromaDB.
-
----
-
-## Step 4
-
-Prompt is constructed using
-
-- role
-- context
-- task
-- format
-- response length
-
----
-
-## Step 5
-
-Mock LLM generates grounded response.
-
----
-
-## Step 6
-
-FastAPI returns
-
-```json
-{
-    "answer": "...",
-    "sources": [
-        "doc_01",
-        "doc_05"
-    ],
-    "confidence": 1
-}
-```
-
----
-
-# Retrieval-Augmented Generation (RAG)
-
-The assistant does **not** memorize Zepto policies.
-
-Instead:
-
-```
-Question
-
-↓
-
-Embedding
-
-↓
-
-Vector Search
-
-↓
-
-Relevant Documents
-
-↓
-
-Prompt
-
-↓
-
-Generated Answer
-```
-
-Advantages
-
-- Grounded responses
-- Reduced hallucinations
-- Easy document updates
-- Scalable knowledge base
-
----
-
-# LangGraph Workflow
-
-State:
-
-```
-GraphState
-```
-
-Nodes
-
-- classify_intent
-- retrieve_and_answer
-- direct_answer
-
-Conditional Routing
-
-```
-Policy Question
-
-↓
-
-retrieve_and_answer
-
-General Question
-
-↓
-
-direct_answer
-```
-
----
-
-# Prompt Engineering
-
-Prompt template contains
-
-## Role
-
-You are a Zepto customer support assistant.
-
-## Context
-
-Retrieved policy documents.
-
-## Task
-
-Answer only using retrieved context.
-
-## Format
-
-Concise customer-friendly response.
-
-## Length
-
-Maximum 2-3 paragraphs.
-
-## Negative Constraint
-
-Do not answer using information not present in the retrieved context.
-
-## Few-shot Example
-
-Includes sample delivery-policy interaction.
-
----
-
-# Embeddings
-
-Model
-
-```
-all-MiniLM-L6-v2
-```
-
-Advantages
-
-- Fast
-- Lightweight
-- High semantic accuracy
-- Excellent retrieval performance
-
----
-
-# Vector Database
-
-Database
-
-```
-ChromaDB
-```
-
-Stores
-
-- embeddings
-- metadata
-- document IDs
-
-Retrieval
-
-```
-Top-K Similarity Search
-```
-
----
-
-# API Endpoints
-
-## GET /
-
-Returns
-
-```
-Zepto Support Assistant API
-```
-
----
-
-## POST /ask
-
-Request
-
-```json
-{
-    "query":"What is the delivery fee?"
-}
-```
-
-Response
-
-```json
-{
-    "answer":"Based on retrieved context...",
-    "sources":[
-        "doc_01",
-        "doc_05",
-        "doc_02"
-    ],
-    "confidence":1
-}
-```
 
 ---
 
 # Installation
 
-Clone repository
+Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/<your-username>/zepto-ai-platform.git
 ```
 
-Move into project
+Navigate to the project directory:
 
 ```bash
-cd support_assistant
+cd zepto-ai-platform
 ```
 
-Install dependencies
+Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -496,27 +198,48 @@ pip install -r requirements.txt
 
 ---
 
-# Build Vector Database
+# Running Module 1
 
 ```bash
-python ingest.py
-```
-
-Expected Output
-
-```
-Ingested 8 documents.
+cd data_pipeline
+python scrape_books.py
 ```
 
 ---
 
-# Run Application
+# Running Module 2
+
+```bash
+cd analytics
+python eda.py
+python modeling.py
+```
+
+Outputs generated include:
+
+- Data visualizations
+- Model comparison
+- Residual plots
+- Trained model pipeline (`best_pipeline.joblib`)
+
+---
+
+# Running Module 3
+
+Build the vector database:
+
+```bash
+cd support_assistant
+python ingest.py
+```
+
+Run the FastAPI application:
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Visit
+Open the interactive API documentation:
 
 ```
 http://127.0.0.1:8000/docs
@@ -524,177 +247,62 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# Docker Deployment
+# Docker
 
-Build
+Build the Docker image:
 
 ```bash
 docker build -t zepto-support .
 ```
 
-Run
+Run the container:
 
 ```bash
 docker run -p 7860:7860 zepto-support
 ```
 
-Open
+---
 
-```
-http://localhost:7860/docs
-```
+# Project Highlights
+
+- End-to-end ETL pipeline
+- Web scraping and data cleaning
+- Relational database design
+- SQL and Pandas integration
+- Exploratory Data Analysis
+- Machine learning model comparison
+- Hyperparameter optimization
+- Saved production-ready ML pipeline
+- Retrieval-Augmented Generation (RAG)
+- Semantic search using embeddings
+- LangGraph workflow orchestration
+- FastAPI REST API
+- Dockerized deployment
 
 ---
 
-# Example Requests
+# Future Enhancements
 
-## Policy Question
-
-```json
-{
-    "query":"What is the delivery fee?"
-}
-```
-
-Response
-
-```json
-{
-    "answer":"Based on the retrieved context...",
-    "sources":[
-        "doc_01",
-        "doc_05",
-        "doc_02"
-    ],
-    "confidence":1
-}
-```
-
----
-
-## General Question
-
-```json
-{
-    "query":"Who won the IPL?"
-}
-```
-
-Response
-
-```json
-{
-    "answer":"I can only answer questions about Zepto policies right now.",
-    "sources":[],
-    "confidence":1
-}
-```
-
----
-
-# Project Modules
-
-## Module 1
-
-Document ingestion
-
-- Read text files
-- Generate embeddings
-- Store vectors
-
----
-
-## Module 2
-
-Retrieval Engine
-
-- Semantic Search
-- Top-K Retrieval
-
----
-
-## Module 3
-
-Support Assistant
-
-- LangGraph
-- Prompt Construction
-- Mock LLM
-- FastAPI
-
----
-
-# Design Decisions
-
-Why ChromaDB?
-
-- Lightweight
-- Persistent
-- Easy integration
-
----
-
-Why Sentence Transformers?
-
-- Excellent semantic embeddings
-- Fast inference
-- Open source
-
----
-
-Why LangGraph?
-
-- Explicit workflow
-- State management
-- Easy routing
-
----
-
-Why FastAPI?
-
-- High performance
-- Automatic OpenAPI docs
-- Pydantic validation
-
----
-
-Why Mock LLM?
-
-- Offline execution
-- Deterministic outputs
-- Reproducible evaluation
-
----
-
-# Future Improvements
-
-- OpenAI / Gemini integration
-- Hybrid search
-- Query rewriting
+- Integration with OpenAI or Gemini APIs
+- Hybrid keyword and semantic search
+- Multi-language support
+- Authentication and authorization
 - Conversation memory
 - Feedback collection
-- Multi-language support
-- Confidence calibration
-- Authentication
-- Streaming responses
-- Real Zepto knowledge base
-- Kubernetes deployment
+- Streaming API responses
 - CI/CD pipeline
+- Kubernetes deployment
 
 ---
 
-# Screenshots
+# Author
 
-Include screenshots of
+**Manasvi P**
 
-- Swagger UI
-- Docker container running
-- Retrieval output
-- ChromaDB ingestion
-- API responses
+Bachelor of Technology (Computer Science)
 
 ---
 
 # License
 
-This project was developed for educational purposes as part of the **Zepto AI Platform – Support Assistant Module** using **FastAPI, ChromaDB, Sentence Transformers, LangGraph, and Docker**.
+This project was developed for educational purposes as part of the **Zepto AI Platform Assignment**.
